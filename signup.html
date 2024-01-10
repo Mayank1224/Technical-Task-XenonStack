@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Sign Up</h2>
+
+    <!-- Add a div to display success message -->
+    <div id="successMessage" class="success-message"></div>
+
+    <form id="signupForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="button" onclick="signup()">Signup</button>
+    </form>
+</div>
+
+<script>
+    function signup() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        // Your API endpoint
+        const apiUrl = "http://localhost:8080/auth/register";
+
+        // Make the fetch API call
+        fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password,
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Sign Up failed");
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the response data (if needed)
+            const successMessage = document.getElementById('successMessage');
+            successMessage.innerText = 'You have successfully signed up!';
+
+            // Redirect to login.html after successful signup
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000); // Redirect after 2 seconds
+        })
+        .catch(error => {
+            console.error("Error signing up:", error);
+        });
+    }
+</script>
+
+</body>
+</html>
